@@ -53,6 +53,13 @@
     scoreDisplay.innerHTML='Pontszám: 0';
     document.body.appendChild(scoreDisplay);
 
+    const missedDisplay = document.createElement('h2');
+    missedDisplay.innerHTML='Elhibázott: 0';
+    document.body.appendChild(missedDisplay);
+    let missed = 0;
+    
+
+
     function activateRandomCell() {
         if (activeCell) {
             activeCell.style.backgroundColor = '';
@@ -66,9 +73,14 @@
 
     cells.forEach(cell=>{
       cell.addEventListener('click',()=>{
-        if(cell === activeCell){
+        if(cell===activeCell){
           score++;
-                  }
+          scoreDisplay.innerHTML='Pontszám: '+score;
+          cell.style.backgroundColor = '';
+          activeCell = null;
+        } else {
+          missedDisplay.innerHTML='Elhibázott: '+(++missed);
+        }
       });
     });
 
