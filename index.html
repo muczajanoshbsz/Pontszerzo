@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  background-color: dodgerblue;
+  padding: 10px;
+}
+.container > div {
+  background-color: #f1f1f1;
+  border: 1px solid black;
+  padding: 10px;
+  font-size: 30px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<h1>Pontszerző játék</h1>
+
+  <!--6. Kattintásjáték / pontszerző
+  - Tábla mérete: 3x3 vagy 4x4
+  - Leírás: A cellák véletlenszerűen változtatják színüket minden
+  másodpercben. A felhasználó a színes cellákra kattint, hogy pontot
+  szerezzen.
+  - JS logika: Számolja a pontokat, kezeli a színváltozást és az időtartamot. -->
+
+<div class="container">
+  <div>1</div>
+  <div>2</div>
+  <div>3</div>  
+  <div>4</div>
+  <div>5</div>
+  <div>6</div>  
+  <div>7</div>
+  <div>8</div>
+  <div>9</div>  
+  <div>10</div>
+  <div>11</div>
+  <div>12</div> 
+</div>
+
+
+<script>
+    let score = 0;
+    const cells = document.querySelectorAll('.container > div');
+    const colors = ['red', 'green', 'blue', 'yellow', 'purple', 'orange'];
+    let activeCell = null;
+    const scoreDisplay = document.createElement('h2');
+    scoreDisplay.innerHTML='Pontszám: 0';
+    document.body.appendChild(scoreDisplay);
+
+    function activateRandomCell() {
+        if (activeCell) {
+            activeCell.style.backgroundColor = '';
+        }
+        const randomIndex = Math.floor(Math.random() * cells.length);
+        activeCell = cells[randomIndex];
+        activeCell.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    setInterval(activateRandomCell, 1000);
+
+    cells.forEach(cell=>{
+      cell.addEventListener('click',()=>{
+        if(cell === activeCell){
+          score++;
+                  }
+      });
+    });
+
+</script>
+
+</body>
+</html>
+
+
+
