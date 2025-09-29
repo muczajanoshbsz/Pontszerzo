@@ -15,18 +15,25 @@
   font-size: 30px;
   text-align: center;
 }
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 20px;
+    cursor: pointer;
+    background-color: lightgreen;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+button:hover {
+    background-color: green;
+    color: white;
+}
 </style>
 </head>
 <body>
 
 <h1>Pontszerző játék</h1>
-
-  <!--6. Kattintásjáték / pontszerző
-  - Tábla mérete: 3x3 vagy 4x4
-  - Leírás: A cellák véletlenszerűen változtatják színüket minden
-  másodpercben. A felhasználó a színes cellákra kattint, hogy pontot
-  szerezzen.
-  - JS logika: Számolja a pontokat, kezeli a színváltozást és az időtartamot. -->
 
 <div class="container">
   <div>1</div>
@@ -43,51 +50,81 @@
   <div>12</div> 
 </div>
 
-
 <script>
-    let score = 0;
-    const cells = document.querySelectorAll('.container > div');
-    const colors = ['red', 'green', 'blue', 'yellow', 'purple', 'orange'];
-    let activeCell = null;
-    const scoreDisplay = document.createElement('h2');
-    scoreDisplay.innerHTML='Pontszám: 0';
-    document.body.appendChild(scoreDisplay);
+let score = 0;
+let missed = 0;
+let timeLeft = 30;
+let activeCell = null;
+let gameInterval = null;
+let colorInterval = null;
 
-    const missedDisplay = document.createElement('h2');
-    missedDisplay.innerHTML='Elhibázott: 0';
-    document.body.appendChild(missedDisplay);
-    let missed = 0;
-    
+const cells = document.querySelectorAll('.container > div');
+const colors = ['red', 'green', 'blue', 'yellow', 'purple', 'orange'];
 
+const scoreDisplay = document.createElement('h2');
+scoreDisplay.innerHTML = 'Pontszám: 0';
+document.body.appendChild(scoreDisplay);
 
-    function activateRandomCell() {
-        if (activeCell) {
-            activeCell.style.backgroundColor = '';
+const missedDisplay = document.createElement('h2');
+missedDisplay.innerHTML = 'Elhibázott: 0';
+document.body.appendChild(missedDisplay);
+
+const timeDisplay = document.createElement('h2');
+timeDisplay.innerHTML = 'Idő: 30';
+document.body.appendChild(timeDisplay);
+
+const startButton = document.createElement('button');
+startButton.innerHTML = 'Játék indítása';
+document.body.appendChild(startButton);
+
+function activateRandomCell() {
+    if (activeCell) activeCell.style.backgroundColor = '';
+    const randomIndex = Math.floor(Math.random() * cells.length);
+    activeCell = cells[randomIndex];
+    activeCell.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+}
+
+function startGame() {
+    score = 0;
+    missed = 0;
+    timeLeft = 30;
+    scoreDisplay.innerHTML = 'Pontszám: 0';
+    missedDisplay.innerHTML = 'Elhibázott: 0';
+    timeDisplay.innerHTML = 'Idő: 30';
+    if (activeCell) activeCell.style.backgroundColor = '';
+    activeCell = null;
+
+    // időzítő
+    if (gameInterval) clearInterval(gameInterval);
+    gameInterval = setInterval(() => {
+        timeLeft--;
+        timeDisplay.innerHTML = 'Idő: ' + timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(gameInterval);
+            clearInterval(colorInterval);
+            alert('Játék vége! Pontszám: ' + score + ', Elhibázott: ' + missed);
         }
-        const randomIndex = Math.floor(Math.random() * cells.length);
-        activeCell = cells[randomIndex];
-        activeCell.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-    }
+    }, 1000);
 
-    setInterval(activateRandomCell, 1000);
+    if (colorInterval) clearInterval(colorInterval);
+    colorInterval = setInterval(activateRandomCell, 1000);
+}
 
-    cells.forEach(cell=>{
-      cell.addEventListener('click',()=>{
-        if(cell===activeCell){
-          score++;
-          scoreDisplay.innerHTML='Pontszám: '+score;
-          cell.style.backgroundColor = '';
-          activeCell = null;
+startButton.onclick = startGame;
+
+cells.forEach(cell => {
+    cell.addEventListener('click', () => {
+        if (cell === activeCell) {
+            score++;
+            scoreDisplay.innerHTML = 'Pontszám: ' + score;
+            cell.style.backgroundColor = '';
+            activeCell = null;
         } else {
-          missedDisplay.innerHTML='Elhibázott: '+(++missed);
+            missedDisplay.innerHTML = 'Elhibázott: ' + (++missed);
         }
-      });
     });
-
+});
 </script>
 
 </body>
 </html>
-
-
-
