@@ -46,7 +46,8 @@ let colorInterval = null;
 const container = document.createElement('div');
 container.className = 'container';
 document.body.appendChild(container);
-for (let i = 0; i < 9; i++) {
+
+for (let i = 0; i < 12; i++) {
     const cell = document.createElement('div');
     cell.innerHTML = i + 1;
     container.appendChild(cell);
@@ -65,7 +66,7 @@ missedDisplay.innerHTML = 'Elhibázott: 0';
 document.body.appendChild(missedDisplay);
 
 const timeDisplay = document.createElement('h2');
-timeDisplay.innerHTML = 'Idő: 30';
+timeDisplay.innerHTML = 'Idő: 30 másodperc';
 document.body.appendChild(timeDisplay);
 
 const startButton = document.createElement('button');
@@ -85,7 +86,7 @@ function startGame() {
     timeLeft = 30;
     scoreDisplay.innerHTML = 'Pontszám: 0';
     missedDisplay.innerHTML = 'Elhibázott: 0';
-    timeDisplay.innerHTML = 'Idő: 30';
+    timeDisplay.innerHTML = 'Idő: 30 másodperc';
     if (activeCell) activeCell.style.backgroundColor = '';
     activeCell = null;
 
@@ -93,7 +94,7 @@ function startGame() {
     if (gameInterval) clearInterval(gameInterval);
     gameInterval = setInterval(() => {
         timeLeft--;
-        timeDisplay.innerHTML = 'Idő: ' + timeLeft;
+        timeDisplay.innerHTML = 'Idő: ' + timeLeft + ' másodperc';
         if (timeLeft <= 0) {
             clearInterval(gameInterval);
             clearInterval(colorInterval);
